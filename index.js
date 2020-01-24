@@ -6,8 +6,8 @@ let uuidv4 = require("uuid/v4");
 
 let app = express();
 
+app.use(express.static('public'));
 app.use(morgan("dev"));
-uuidv4();
 
 /*
 
@@ -24,34 +24,34 @@ let comentario = {
 let comentarios = [
   {
     id: uuidv4(),
-    titulo: "Comentario de prueba 1",
+    titulo: "Pienso, luego existo",
     contenido:
       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui, aperiam! Eum dolorum consectetur ratione, vitae laudantium eius, quisquam omnis quidem quibusdam eos libero commodi ipsa!",
-    autor: "Random 1",
+    autor: "Aurturo Manríquez",
     fecha: "2020-01-23"
   },
   {
     id: uuidv4(),
-    titulo: "Comentario de prueba 2",
+    titulo: "La cruda realidad",
     contenido:
       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui, aperiam! Eum dolorum consectetur ratione!",
-    autor: "Random 2",
+    autor: "Elizabeth Morales",
     fecha: "2020-01-23"
   },
   {
     id: uuidv4(),
-    titulo: "Comentario de prueba 3",
+    titulo: "¡La mejor obra de teatro!",
     contenido:
       "Adipisicing elit. Qui, aperiam! Eum dolorum consectetur ratione, vitae laudantium eius, quisquam omnis ipsa!",
-    autor: "Random 3",
+    autor: "La Rosalía",
     fecha: "2020-01-23"
   },
   {
     id: uuidv4(),
-    titulo: "Comentario de prueba 4",
+    titulo: "No puede haber una mejor representación...",
     contenido:
       "Lorem dantium eius, quisquam omnis quidem quibusdam eos libero commodi ipsa!",
-    autor: "Random 1",
+    autor: "Genaro García",
     fecha: "2020-01-23"
   }
 ];
@@ -67,7 +67,7 @@ function getFecha() {
 }
 
 // GET METHODS
-app.get("/blog-api/", (req, res) => {
+app.get("/blog-api/comentarios", (req, res) => {
   return res.status(200).json(comentarios);
 });
 
@@ -75,13 +75,11 @@ app.get("/blog-api/comentarios-por-autor", (req, res) => {
   if (req.query.autor) {
     let autor = req.query.autor;
 
-    let resultado = comentarios.filter((elemento) => {
+    let resultado = comentarios.filter(elemento => {
       if (elemento.autor === autor) {
         return elemento;
       }
     });
-
-    console.log(resultado);
 
     if (resultado.length > 0) {
       return res.status(200).json(resultado);
@@ -124,7 +122,7 @@ app.delete("/blog-api/remover-comentario/:id", (req, res) => {
 
   console.log(id);
 
-  let resultado = comentarios.find((elemento) => {
+  let resultado = comentarios.find(elemento => {
     if (elemento.id === id) {
       return elemento;
     }
@@ -142,60 +140,52 @@ app.delete("/blog-api/remover-comentario/:id", (req, res) => {
 });
 
 // PUT METHOD
-app.put('/blog-api/actualizar-comentario/:id', jsonParser, (req, res) => {
-    let idParam = req.params.id;
-    let idBody = req.body.id;
-    let titulo = req.body.titulo;
-    let contenido = req.body.contenido;
-    let autor = req.body.autor;
+app.put("/blog-api/actualizar-comentario/:id", jsonParser, (req, res) => {
+  let idParam = req.params.id;
+  let idBody = req.body.id;
+  let titulo = req.body.titulo;
+  let contenido = req.body.contenido;
+  let autor = req.body.autor;
 
-    if (idBody != '') {
-        if (idParam == idBody) {
-            if (titulo != '' || contenido != '' || autor != '') {
+  if (idBody != "") {
+    if (idParam == idBody) {
+      if (titulo != "" || contenido != "" || autor != "") {
+        let resultado = comentarios.find(elemento => {
+          if (elemento.id === idParam) {
+            return elemento;
+          }
+        });
 
-                let resultado = comentarios.find((elemento) => {
-                    if (elemento.id === idParam) {
-                      return elemento;
-                    }
-                });
+        let index = comentarios.indexOf(resultado);
 
-                let index = comentarios.indexOf(resultado);
+        if (resultado) {
+          if (titulo != "") {
+            comentarios[index].titulo = titulo;
+          }
+          if (contenido != "") {
+            comentarios[index].contenido = contenido;
+          }
+          if (autor != "") {
+            comentarios[index].autor = autor;
+          }
 
-                if (resultado) {
-                    if (titulo != '') {
-                        comentarios[index].titulo = titulo;
-                    }
-                    if (contenido != '') {
-                        comentarios[index].contenido = contenido;
-                    }
-                    if (autor != '') {
-                        comentarios[index].autor = autor;
-                    }
-
-                    return res.status(202).send(comentarios[index]);
-                }
-                else {
-                    res.statusMessage = "No existe el comentario con id: " + idParam;
-                    return res.status(404).send();
-                }
-
-
-            }
-            else {
-                res.statusMessage = "No hay datos para actualizar";
-                return res.status(406).send();
-            }
+          return res.status(202).send(comentarios[index]);
+        } else {
+          res.statusMessage = "No existe el comentario con id: " + idParam;
+          return res.status(404).send();
         }
-        else {
-            res.statusMessage = "ID de JSON no coincide con ID en URL";
-            return res.status(409).send();
-        }
-    }
-    else {
-        res.statusMessage = "ID faltante";
+      } else {
+        res.statusMessage = "No hay datos para actualizar";
         return res.status(406).send();
+      }
+    } else {
+      res.statusMessage = "ID de JSON no coincide con ID en URL";
+      return res.status(409).send();
     }
-
+  } else {
+    res.statusMessage = "ID faltante";
+    return res.status(406).send();
+  }
 });
 
 app.listen(8080, () => {
