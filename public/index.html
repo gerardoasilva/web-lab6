@@ -13,7 +13,7 @@
 
 <body>
     <!-- titulo de la pag -->
-    <header class="p-5 bg-secondary text-light">
+    <header class="p-3 bg-secondary text-light">
         <h1>CRUD Blog</h1>
     </header>
     
@@ -81,7 +81,7 @@
                 </form>
 
                 <!-- Eliminar comentario -->
-                <form id="eliminarComentario" class="col bg-light rounded-lg pt-2 pb-2 mb-5 border border-info">
+                <form id="formEliminar" class="col bg-light rounded-lg pt-2 pb-2 mb-5 border border-info">
                     <h1>Eliminar comentario</h1>
                     <div class="form-group row">
                         <label for="colFormLabel" class="col-sm-2 col-form-label-lg">ID</label>
@@ -99,7 +99,7 @@
             <div class="col bg-info pt-5">
                 <h2 class="text-light">Comentarios</h2>
 
-                <section id="listaComentarios" class="bg-warning">
+                <section id="listaComentarios" >
                     <!-- Aqui van los comentarios-->
                 </section>
 
@@ -109,20 +109,20 @@
     </main>
 
     <!-- seccion de busqueda por autor -->
-    <section class="bg-warning">
+    <section class="container-fluid">
         <div class="row">
 
-            <!-- Mitad de comentarios -->
-            <div class="col bg-white pt-5">
-                <h2>Comentarios <span id="creador"></span></h2>
-                <section id="comentariosPorAutor" class="bg-warning p-2">
+            <!-- Mitad 1 de comentarios -->
+            <div class="col bg-info pt-5">
+                <h2 class="text-light">Comentarios <span id="creador"></span></h2>
+                <section id="comentariosPorAutor">
                     <!-- Aqui van los comentarios-->
                 </section>
 
             </div>
 
-            <!-- mitad de forms -->
-            <div class="col bg-info pt-5">
+            <!-- Mitad 2 de form -->
+            <div class="col bg-white pt-5">
 
                 <!-- Buscar por autor -->
                 <form id="formBuscar" class="col bg-light rounded-lg pt-2 pb-2 mb-5 border border-secondary">
@@ -133,7 +133,7 @@
                             <input type="text" class="form-control" id="autorBuscar" placeholder="Nombre">
                         </div>
                     </div>
-                    <button class="btn btn-info" type="submit">Modificar</button>
+                    <button class="btn btn-info" type="submit">Buscar</button>
                 </form>
 
             </div>
@@ -156,3 +156,5 @@
 </body>
 
 </html>
+
+

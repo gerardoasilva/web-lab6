@@ -24,7 +24,7 @@ let comentario = {
 let comentarios = [
   {
     id: uuidv4(),
-    titulo: "Pienso, luego existo",
+    titulo: "Pienso, luego existo.",
     contenido:
       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui, aperiam! Eum dolorum consectetur ratione, vitae laudantium eius, quisquam omnis quidem quibusdam eos libero commodi ipsa!",
     autor: "Aurturo Manríquez",
@@ -67,10 +67,13 @@ function getFecha() {
 }
 
 // GET METHODS
+// CARGAR comentarios
 app.get("/blog-api/comentarios", (req, res) => {
   return res.status(200).json(comentarios);
 });
 
+
+// BUSCAR comentarios por autor
 app.get("/blog-api/comentarios-por-autor", (req, res) => {
   if (req.query.autor) {
     let autor = req.query.autor;
@@ -94,6 +97,7 @@ app.get("/blog-api/comentarios-por-autor", (req, res) => {
 });
 
 // POST METHOD
+// AGREGAR comentario
 app.post("/blog-api/nuevo-comentario", jsonParser, (req, res) => {
   let titulo = req.body.titulo;
   let contenido = req.body.contenido;
@@ -117,10 +121,9 @@ app.post("/blog-api/nuevo-comentario", jsonParser, (req, res) => {
 });
 
 // DELETE METHOD
+// ELIMINAR comentario
 app.delete("/blog-api/remover-comentario/:id", (req, res) => {
   let id = req.params.id;
-
-  console.log(id);
 
   let resultado = comentarios.find(elemento => {
     if (elemento.id === id) {
@@ -129,9 +132,7 @@ app.delete("/blog-api/remover-comentario/:id", (req, res) => {
   });
 
   if (resultado) {
-    console.log(comentarios);
     comentarios.splice(comentarios.indexOf(resultado), 1);
-    console.log(comentarios);
     return res.status(200).send();
   } else {
     res.statusMessage = "No se encontró el comentario con id: " + id;
@@ -140,6 +141,7 @@ app.delete("/blog-api/remover-comentario/:id", (req, res) => {
 });
 
 // PUT METHOD
+// MODIFICAR comentario
 app.put("/blog-api/actualizar-comentario/:id", jsonParser, (req, res) => {
   let idParam = req.params.id;
   let idBody = req.body.id;
